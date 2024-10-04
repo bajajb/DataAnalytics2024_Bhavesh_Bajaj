@@ -1,0 +1,20 @@
+> table(predict(classifier1, abalone[,-8]),abalone[,8],dnn=list('predicted','actual'))
+         actual
+predicted young adult  old
+    young   988   291   78
+    adult   404  1170  561
+    old      15   349  320
+
+> table(predict(classifier2, abalone[,-8]),abalone[,8],dnn=list('predicted','actual'))
+         actual
+predicted young adult  old
+    young  1164   507  191
+    adult   238  1019  489
+    old       5   284  279
+
+> table(predict(classifier3, abalone[,-8]),abalone[,8],dnn=list('predicted','actual'))
+         actual
+predicted young adult  old
+    young  1136   425  114
+    adult   263  1075  521
+    old       8   310  324

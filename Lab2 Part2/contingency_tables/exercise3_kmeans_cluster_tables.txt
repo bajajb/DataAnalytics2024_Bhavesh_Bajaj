@@ -1,0 +1,13 @@
+> table(abalone.assigned.clusters, abalone[,8])
+                         
+abalone.assigned.clusters young adult  old
+                        1    24   487  337
+                        2   297   944  485
+                        3  1086   379  137
+
+> table(iris.assigned.clusters, iris[,5])
+                      
+iris.assigned.clusters setosa versicolor virginica
+                     1     50          0         0
+                     2      0         48        14
+                     3      0          2        36
