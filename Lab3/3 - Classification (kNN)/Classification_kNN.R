@@ -10,6 +10,7 @@ library(class)
 
 epi.subset <- epi[5:10]
 
+# replacing missing values with 0
 epi.subset[is.na(epi.subset)] <- 0
 
 epi.subset.region1 <- subset(epi.subset, region==c("Global West","Asia-Pacific","Latin America & Caribbean"))
