@@ -1,5 +1,5 @@
 # exercise 1
-EPI_data <- read.csv("C:/Users/bajajb/Documents/DataAnalytics/epi2024results06022024.txt")
+EPI_data <- read.csv("epi2024results06022024.txt")
 View(EPI_data)
 attach(EPI_data)
 EPI.new
