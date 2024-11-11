@@ -109,3 +109,8 @@ f13 = 2 * precision3 * recall3 / (precision3 + recall3)
 data.frame(recall1, precision1, f11)
 data.frame(recall2, precision2, f12)
 data.frame(recall3, precision3, f13)
+
+# knn accuracies
+plot(mod1.knn$results$k,mod1.knn$results$Accuracy,type="b",ylim=c(0,1))
+plot(mod2.knn$results$k,mod2.knn$results$Accuracy,type="b",ylim=c(0,1))
+plot(mod3.knn$results$k,mod3.knn$results$Accuracy,type="b",ylim=c(0,1))
