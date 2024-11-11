@@ -1,0 +1,35 @@
+> # loadings
+> principal_components$loadings
+
+Loadings:
+                             Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7
+Alcohol                       0.139  0.531  0.199  0.195         0.410  0.599
+Malic acid                   -0.277  0.205  0.398 -0.540  0.502  0.233       
+Magnesium                     0.148  0.304 -0.754 -0.324  0.383 -0.185  0.144
+Total phenols                 0.423         0.265         0.101 -0.476       
+Flavanoids                    0.456         0.209               -0.270       
+Nonflavanoid Phenols         -0.322         0.135  0.544  0.631 -0.348       
+Color Intensity              -0.121  0.555         0.173 -0.282 -0.361       
+Hue                           0.339 -0.282 -0.175  0.364  0.289  0.329  0.181
+Od280/od315 of diluted wines  0.417 -0.159  0.258 -0.182  0.133              
+Proline                       0.297  0.404         0.257  0.105  0.290 -0.755
+                             Comp.8 Comp.9 Comp.10
+Alcohol                       0.199  0.228        
+Malic acid                   -0.326               
+Magnesium                     0.101               
+Total phenols                -0.210  0.427 -0.526 
+Flavanoids                   -0.134         0.806 
+Nonflavanoid Phenols          0.237               
+Color Intensity              -0.306 -0.577        
+Hue                          -0.582 -0.260 -0.109 
+Od280/od315 of diluted wines  0.529 -0.593 -0.216 
+Proline                       0.111               
+
+               Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7 Comp.8 Comp.9
+SS loadings       1.0    1.0    1.0    1.0    1.0    1.0    1.0    1.0    1.0
+Proportion Var    0.1    0.1    0.1    0.1    0.1    0.1    0.1    0.1    0.1
+Cumulative Var    0.1    0.2    0.3    0.4    0.5    0.6    0.7    0.8    0.9
+               Comp.10
+SS loadings        1.0
+Proportion Var     0.1
+Cumulative Var     1.0

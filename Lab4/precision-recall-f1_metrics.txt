@@ -1,0 +1,54 @@
+> # metrics - precision, recall, f1
+> diag1 = diag(cm1)
+
+> diag2 = diag(cm2)
+
+> diag3 = diag(cm3)
+
+> rowsums1 = apply(cm1, 1, sum)
+
+> rowsums2 = apply(cm2, 1, sum)
+
+> rowsums3 = apply(cm3, 1, sum)
+
+> colsums1 = apply(cm1, 2, sum)
+
+> colsums2 = apply(cm2, 2, sum)
+
+> colsums3 = apply(cm3, 2, sum)
+
+> recall1 = diag1 / rowsums1
+
+> recall2 = diag2 / rowsums2
+
+> recall3 = diag3 / rowsums3
+
+> precision1 = diag1 / colsums1
+
+> precision2 = diag2 / colsums2
+
+> precision3 = diag3 / colsums3
+
+> f11 = 2 * precision1 * recall1 / (precision1 + recall1)
+
+> f12 = 2 * precision2 * recall2 / (precision2 + recall2)
+
+> f13 = 2 * precision3 * recall3 / (precision3 + recall3)
+
+> data.frame(recall1, precision1, f11)
+    recall1 precision1       f11
+1 0.9444444  0.9444444 0.9444444
+2 0.6500000  0.7647059 0.7027027
+3 0.7500000  0.6315789 0.6857143
+
+> data.frame(recall2, precision2, f12)
+    recall2 precision2       f12
+1 1.0000000  0.8333333 0.9090909
+2 0.8888889  1.0000000 0.9411765
+3 1.0000000  1.0000000 1.0000000
+
+> data.frame(recall3, precision3, f13)
+    recall3 precision3       f13
+1 1.0000000  1.0000000 1.0000000
+2 0.8695652  1.0000000 0.9302326
+3 1.0000000  0.8235294 0.9032258
