@@ -1,0 +1,21 @@
+> # compare all 3 models
+> # SVM - linear kernel
+> data.frame(svm.precision1, svm.recall1, svm.f11)
+  svm.precision1 svm.recall1   svm.f11
+1      0.9833333   1.0000000 0.9915966
+2      0.9041096   0.9295775 0.9166667
+3      0.9111111   0.8541667 0.8817204
+
+> # SVM - polynomial kernel - optimized gamma & cost using tuned SVM
+> data.frame(svm.precision2, svm.recall2, svm.f12)
+  svm.precision2 svm.recall2   svm.f12
+1      0.9672131   1.0000000 0.9833333
+2      0.9200000   0.9718310 0.9452055
+3      0.9761905   0.8541667 0.9111111
+
+> # kNN
+> data.frame(knn.precision, knn.recall, knn.f1)
+  knn.precision knn.recall    knn.f1
+1     0.7794118  0.8983051 0.8346457
+2     0.8360656  0.7183099 0.7727273
+3     0.7551020  0.7708333 0.7628866

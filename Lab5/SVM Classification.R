@@ -29,7 +29,7 @@ svm.f11 = 2 * svm.precision1 * svm.recall1 / (svm.precision1 + svm.recall1)
 #set.seed(99)
 #tuned.svm <- tune.svm(Type~., data = wine.subset, kernel = 'polynomial',gamma = seq(0,1,0.1), cost = seq(0.1,1,0.1))
 ## train SVM model - polynomial kernel (using gamma & cost from tuned SVM)
-svm.mod2 <- svm(Type ~ ., data = wine.subset, kernel = 'polynomial', gamma = 0.2, cost = 0.1)
+svm.mod2 <- svm(Type ~ ., data = wine.subset, kernel = 'polynomial', gamma = 0.7, cost = 0.2)
 
 svm.pred2 <- predict(svm.mod2, wine.subset[,-1])
 
