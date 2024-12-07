@@ -1,0 +1,227 @@
+library("e1071")
+
+rm(list=ls())
+
+data <- read.csv("data/NYC_Citywide_Annualized_Calendar_Sales_Update_20241118.csv")
+data$SALE.DATE = as.Date(data$SALE.DATE, "%m/%d/%Y")
+data$LAND.SQUARE.FEET = as.numeric(gsub(',','',data$LAND.SQUARE.FEET))
+data$GROSS.SQUARE.FEET = as.numeric(gsub(',','',data$GROSS.SQUARE.FEET))
+data.bourough1 <- data[data$BOROUGH == "1",]
+
+# box plots
+price.boxplot <- boxplot(data.bourough1$SALE.PRICE,main="Sale Price Boxplot")
+date.boxplot <- boxplot(data.bourough1$SALE.DATE,main="Sale Date Boxplot")
+units.residential.boxplot <- boxplot(data.bourough1$RESIDENTIAL.UNITS,main="Residential Units Boxplot")
+units.commercial.boxplot <- boxplot(data.bourough1$COMMERCIAL.UNITS,main="Commercial Units Boxplot")
+units.total.boxplot <- boxplot(data.bourough1$TOTAL.UNITS,main="Total Units Boxplot")
+sqft.land.boxplot <- boxplot(data.bourough1$LAND.SQUARE.FEET,main="Land Square Feet Boxplot")
+sqft.gross.boxplot <- boxplot(data.bourough1$GROSS.SQUARE.FEET,main="Gross Square Feet Boxplot")
+
+# histograms
+hist(data.bourough1$SALE.PRICE)
+hist(data.bourough1$SALE.DATE,breaks=as.Date(c("2016-01-01","2017-01-01","2018-01-01","2019-01-01","2020-01-01","2021-01-01","2022-01-01","2023-01-01")))
+hist(data.bourough1$RESIDENTIAL.UNITS)
+hist(data.bourough1$COMMERCIAL.UNITS)
+hist(data.bourough1$TOTAL.UNITS)
+hist(data.bourough1$LAND.SQUARE.FEET)
+hist(data.bourough1$GROSS.SQUARE.FEET)
+
+# identify outliers
+price.boxplot.no_outliers <- boxplot(data.bourough1$SALE.PRICE,ylim=c(0,5000000),main="Sale Price Boxplot w/o Outliers")
+units.residential.boxplot.no_outliers <- boxplot(data.bourough1$RESIDENTIAL.UNITS,ylim=c(0,5),main="Residential Units Boxplot w/o Outliers")
+units.commercial.boxplot.no_outliers <- boxplot(data.bourough1$COMMERCIAL.UNITS,ylim=c(0,5),main="Commercial Units Boxplot w/o Outliers")
+units.total.boxplot.no_outliers <- boxplot(data.bourough1$TOTAL.UNITS,ylim=c(0,5),main="Total Units Boxplot w/o Outliers")
+sqft.land.boxplot.no_outliers <- boxplot(data.bourough1$LAND.SQUARE.FEET,ylim=c(0,6000),main="Land Square Feet Boxplot w/o Outliers")
+sqft.gross.boxplot.no_outliers <- boxplot(data.bourough1$GROSS.SQUARE.FEET,ylim=c(0,10000),main="Gross Square Feet Boxplot w/o Outliers")
+
+# regression models
+data.bourough1.log <- data.bourough1
+data.bourough1.log$SALE.PRICE[data.bourough1.log$SALE.PRICE == 0] <- 1
+data.bourough1.log$LAND.SQUARE.FEET[data.bourough1.log$LAND.SQUARE.FEET == 0] <- 1
+data.bourough1.log$GROSS.SQUARE.FEET[data.bourough1.log$GROSS.SQUARE.FEET == 0] <- 1
+
+set.seed(1)
+train.indexes <- sample(nrow(data.bourough1.log),0.75*nrow(data.bourough1.log))
+
+train <- data.bourough1.log[train.indexes,]
+
+lm.mod1.price <- lm(log10(train$SALE.PRICE)~log10(train$LAND.SQUARE.FEET)
+                    +log10(train$GROSS.SQUARE.FEET))
+                   
+lm.mod2.price <- lm(log10(train$SALE.PRICE)~train$RESIDENTIAL.UNITS
+                    +train$COMMERCIAL.UNITS+train$TOTAL.UNITS)
+
+summary(lm.mod1.price)
+summary(lm.mod2.price)
+
+# model 1 predictions
+test1 <- data.bourough1.log[,c("SALE.PRICE","GROSS.SQUARE.FEET")]
+test2 <- data.bourough1.log[,c("SALE.PRICE","LAND.SQUARE.FEET")]
+
+lm.mod1.price.predict1 <- predict(lm.mod1.price,test1)
+lm.mod1.price.predict2 <- predict(lm.mod1.price,test2)
+
+paste("Error Statistics for Model 1")
+
+## err = predicted - real
+err1 <- na.omit(lm.mod1.price.predict1-log10(test1$SALE.PRICE))
+err2 <- na.omit(lm.mod1.price.predict2-log10(test2$SALE.PRICE))
+
+## MAE
+abs.err1 <- abs(err1)
+abs.err2 <- abs(err2)
+
+mean.abs.err1 <- mean(abs.err1)
+mean.abs.err2 <- mean(abs.err2)
+
+paste("MAE for Test Set 1: ",mean.abs.err1)
+paste("MAE for Test Set 2: ",mean.abs.err2)
+
+## MSE
+sq.err1 <- err1^2
+sq.err2 <- err2^2
+
+mean.sq.err1 <- mean(sq.err1)
+mean.sq.err2 <- mean(sq.err2)
+
+paste("MSE for Test Set 1: ",mean.sq.err1)
+paste("MSE for Test Set 2: ",mean.sq.err2)
+
+## RMSE
+sq.err1 <- err1^2
+sq.err2 <- err2^2
+
+mean.sq.err1 <- mean(sq.err1)
+mean.sq.err2 <- mean(sq.err2)
+
+root.mean.sq.err1 <- sqrt(mean.sq.err1)
+root.mean.sq.err2 <- sqrt(mean.sq.err2)
+
+paste("RMSE for Test Set 1: ",root.mean.sq.err1)
+paste("RMSE for Test Set 2: ",root.mean.sq.err2)
+
+# model 2 predictions
+test1 <- data.bourough1.log[,c("SALE.PRICE","RESIDENTIAL.UNITS")]
+test2 <- data.bourough1.log[,c("SALE.PRICE","COMMERCIAL.UNITS")]
+
+lm.mod2.price.predict1 <- predict(lm.mod2.price,test1)
+lm.mod2.price.predict2 <- predict(lm.mod2.price,test2)
+
+paste("Error Statistics for Model 2")
+
+## err = predicted - real
+err1 <- na.omit(lm.mod2.price.predict1-log10(test1$SALE.PRICE))
+err2 <- na.omit(lm.mod2.price.predict2-log10(test2$SALE.PRICE))
+
+## MAE
+abs.err1 <- abs(err1)
+abs.err2 <- abs(err2)
+
+mean.abs.err1 <- mean(abs.err1)
+mean.abs.err2 <- mean(abs.err2)
+
+paste("MAE for Test Set 1: ",mean.abs.err1)
+paste("MAE for Test Set 2: ",mean.abs.err2)
+
+## MSE
+sq.err1 <- err1^2
+sq.err2 <- err2^2
+
+mean.sq.err1 <- mean(sq.err1)
+mean.sq.err2 <- mean(sq.err2)
+
+paste("MSE for Test Set 1: ",mean.sq.err1)
+paste("MSE for Test Set 2: ",mean.sq.err2)
+
+## RMSE
+sq.err1 <- err1^2
+sq.err2 <- err2^2
+
+mean.sq.err1 <- mean(sq.err1)
+mean.sq.err2 <- mean(sq.err2)
+
+root.mean.sq.err1 <- sqrt(mean.sq.err1)
+root.mean.sq.err2 <- sqrt(mean.sq.err2)
+
+paste("RMSE for Test Set 1: ",root.mean.sq.err1)
+paste("RMSE for Test Set 2: ",root.mean.sq.err2)
+
+# supervised learning model: Naive Bayes
+train <- data.bourough1[train.indexes,]
+test <- data.bourough1[-train.indexes,]
+
+classifier <- naiveBayes(train[,-18],train[,18])
+classifier.prediction <- predict(classifier, test[,-18])
+
+# precision, recall, f1 metrics
+classifier.cm = as.matrix(table(Actual = test[,18], Predicted = classifier.prediction))
+classifier.cm
+
+diag = diag(classifier.cm) # number of correctly classified instances per class 
+rowsums = apply(classifier.cm, 1, sum) # number of instances per class
+colsums = apply(classifier.cm, 2, sum) # number of predictions per class
+
+recall = diag / rowsums 
+precision = diag / colsums
+f1 = 2 * precision * recall / (precision + recall) 
+
+data.frame(recall, precision, f1)
+
+# test models on entire dataset
+data.log <- data
+data.log$SALE.PRICE[data.log$SALE.PRICE == 0] <- 1
+data.log$LAND.SQUARE.FEET[data.log$LAND.SQUARE.FEET == 0] <- 1
+data.log$GROSS.SQUARE.FEET[data.log$GROSS.SQUARE.FEET == 0] <- 1
+
+set.seed(1)
+
+lm.mod2.price.predict.data <- predict(lm.mod2.price,data.log)
+
+paste("Error Statistics for Model")
+
+## err = predicted - real
+err <- na.omit(lm.mod2.price.predict.data-log10(data.log$SALE.PRICE))
+
+## MAE
+abs.err <- abs(err)
+
+mean.abs.err <- mean(abs.err)
+
+paste("MAE for Dataset: ",mean.abs.err)
+
+## MSE
+sq.err <- err^2
+
+mean.sq.err <- mean(sq.err)
+
+paste("MSE for Dataset: ",mean.sq.err)
+
+## RMSE
+sq.err <- err^2
+
+mean.sq.err <- mean(sq.err)
+
+root.mean.sq.err <- sqrt(mean.sq.err)
+
+paste("RMSE for Dataset: ",root.mean.sq.err)
+
+plot(lm.mod2.price.predict.data,main="Linear Model Predictions")
+plot(lm.mod2.price$residuals,main="Linear Model Residuals")
+
+classifier.prediction.data <- predict(classifier, data[,-18])
+levels(classifier.prediction.data) <- c(1,2,3,4)
+classifier.prediction.data[classifier.prediction.data==3] <- 4
+
+levels(classifier.prediction.data) <- c(levels(classifier.prediction.data),3)
+classifier.data.cm = as.matrix(table(Actual = data[,18], Predicted = classifier.prediction.data))
+classifier.data.cm
+
+diag.data = diag(classifier.data.cm) # number of correctly classified instances per class
+rowsums.data = apply(classifier.data.cm, 1, sum) # number of instances per class
+colsums.data = apply(classifier.data.cm, 2, sum) # number of predictions per class
+
+recall.data = diag.data / rowsums.data
+precision.data = diag.data / colsums.data
+f1.data = 2 * precision.data * recall.data / (precision.data + recall.data) 
+
+data.frame(recall.data, precision.data, f1.data)
