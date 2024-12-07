@@ -1,0 +1,13 @@
+> set.seed(99)
+> tuned.svm <- tune.svm(Type~., data = wine.subset, kernel = 'polynomial',gamma = seq(0,1,0.1), cost = seq(0.1,1,0.1))
+> tuned.svm
+
+Parameter tuning of ‘svm’:
+
+- sampling method: 10-fold cross validation 
+
+- best parameters:
+ gamma cost
+   0.7  0.2
+
+- best performance: 0.1287582

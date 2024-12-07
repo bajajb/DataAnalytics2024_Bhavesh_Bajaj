@@ -1,0 +1,27 @@
+> # contingency tables
+> cm1 = as.matrix(table(Actual = mod1.test$Type, Predicted = pred1.knn))
+
+> cm2 = as.matrix(table(Actual = mod2.test$wine.Type, Predicted = pred2.knn))
+
+> cm3 = as.matrix(table(Actual = mod3.test$wine.Type, Predicted = pred3.knn))
+
+> cm1
+      Predicted
+Actual  1  2  3
+     1 17  0  1
+     2  1 13  6
+     3  0  4 12
+
+> cm2
+      Predicted
+Actual  1  2  3
+     1 15  0  0
+     2  3 24  0
+     3  0  0 12
+
+> cm3
+      Predicted
+Actual  1  2  3
+     1 17  0  0
+     2  0 20  3
+     3  0  0 14
